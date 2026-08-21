@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GlowButton } from '../ui/GlowButton';
-import { Menu, X, Sparkles } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 interface NavbarProps {
   onOpenInquiry: (initialType?: 'project' | 'developer') => void;
