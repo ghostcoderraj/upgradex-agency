@@ -5,10 +5,11 @@ interface StatProps {
   end: number;
   suffix?: string;
   label: string;
+  note: string;
   icon: React.ReactNode;
 }
 
-const StatCounter: React.FC<StatProps> = ({ end, suffix = '', label, icon }) => {
+const StatCounter: React.FC<StatProps> = ({ end, suffix = '', label, note, icon }) => {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -46,22 +47,17 @@ const StatCounter: React.FC<StatProps> = ({ end, suffix = '', label, icon }) => 
   return (
     <div
       ref={ref}
-      className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 backdrop-blur-md hover:border-gold/30 hover:bg-white/[0.04] transition-all duration-300 group"
+      className="group rounded-2xl border border-white/10 bg-[#0a0c14] p-6 transition-colors duration-300 hover:border-gold/40"
     >
-      <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-xl bg-gold/10 border border-gold/30 flex items-center justify-center text-gold group-hover:scale-110 transition-transform">
-          {icon}
-        </div>
-        <div>
-          <div className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            {count}
-            <span className="text-gold">{suffix}</span>
-          </div>
-          <div className="text-xs sm:text-sm font-medium text-gray-400 mt-0.5">
-            {label}
-          </div>
-        </div>
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-gold/30 bg-gold/10 text-gold">
+        {icon}
       </div>
+      <div className="mt-5 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+        {count}
+        <span className="text-gold">{suffix}</span>
+      </div>
+      <div className="mt-2 text-sm font-semibold text-white">{label}</div>
+      <p className="mt-1 text-sm leading-relaxed text-gray-400">{note}</p>
     </div>
   );
 };
@@ -75,7 +71,7 @@ export const TrustSection: React.FC = () => {
             Proven Performance
           </p>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white mt-1">
-            Helping ambitious businesses build, launch & grow online.
+            Helping brands launch, get found, and grow online.
           </h2>
         </div>
 
@@ -83,26 +79,30 @@ export const TrustSection: React.FC = () => {
           <StatCounter
             end={50}
             suffix="+"
-            label="Projects Delivered"
-            icon={<Award className="w-6 h-6" />}
+            label="Projects delivered"
+            note="Sites, products, and launches shipped for clients."
+            icon={<Award className="h-5 w-5" />}
           />
           <StatCounter
             end={20}
             suffix="+"
-            label="Businesses Scaled"
-            icon={<Users className="w-6 h-6" />}
+            label="Businesses scaled"
+            note="Brands that stayed for the next version."
+            icon={<Users className="h-5 w-5" />}
           />
           <StatCounter
             end={100}
             suffix="%"
-            label="Client Focus & Quality"
-            icon={<CheckCircle className="w-6 h-6" />}
+            label="Attention on the brief"
+            note="The work follows the goal you set, not a template."
+            icon={<CheckCircle className="h-5 w-5" />}
           />
           <StatCounter
             end={24}
             suffix="/7"
-            label="Digital Support"
-            icon={<Clock className="w-6 h-6" />}
+            label="A way to reach us"
+            note="Email or WhatsApp when the next question comes up."
+            icon={<Clock className="h-5 w-5" />}
           />
         </div>
       </div>

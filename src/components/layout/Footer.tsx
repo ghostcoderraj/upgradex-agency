@@ -1,56 +1,103 @@
 import React from 'react';
+import { ArrowUpRight } from 'lucide-react';
 
+const workLinks = [
+  { label: 'Services', href: '#services' },
+  { label: 'Selected work', href: '#work' },
+  { label: 'Process', href: '#process' },
+];
+
+const companyLinks = [
+  { label: 'About', href: '#about' },
+  { label: 'Hire a developer', href: '#hire-developer' },
+  { label: 'Contact', href: '#contact' },
+];
+
+const socialLinks = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/117074268/' },
+  { label: 'Instagram', href: 'https://www.instagram.com/upgradex_agency' },
+  { label: 'GitHub', href: 'https://github.com/upgradex-agency' },
+];
 
 export const Footer: React.FC = () => {
-  const footerLinks = [
-    { label: 'Services', href: '#services' },
-    { label: 'Work', href: '#work' },
-    { label: 'Process', href: '#process' },
-    { label: 'About', href: '#about' },
-    { label: 'Hire a Developer', href: '#hire-developer' },
-    { label: 'Contact', href: '#contact' },
-  ];
-
   return (
-    <footer className="py-16 bg-[#020204] border-t border-white/10 relative text-gray-400">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 pb-12 border-b border-white/10">
-          
-          {/* Left Brand */}
-          <div className="space-y-2 text-center md:text-left">
+    <footer
+      className="relative overflow-hidden border-t border-white/10 bg-[#020204] text-gray-400"
+      style={{ containerType: 'inline-size' }}
+    >
+      <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center px-3 sm:px-5">
+        <span
+          className="select-none whitespace-nowrap font-extrabold leading-none tracking-[-0.055em] text-white/[0.05]"
+          style={{ fontSize: 'min(18.6cqw, calc((100cqw - 2.75rem) / 5.22))' }}
+        >
+          UPGRADEX
+        </span>
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
+          <div className="max-w-sm space-y-4 lg:col-span-5">
             <a href="#home" className="inline-flex items-center">
               <img
-                src="/logo.png?v=2"
+                src="/logo.png?v=3"
                 alt="UpgradeX Agency"
-                className="h-20 md:h-24 w-auto object-contain"
+                className="h-11 w-auto object-contain sm:h-12"
               />
             </a>
-            <p className="text-xs text-gray-400 max-w-sm">
-              Building digital experiences for ambitious businesses.
+            <p className="text-sm leading-relaxed text-gray-400">
+              Digital marketing, websites, and products for brands ready to grow.
             </p>
           </div>
 
-          {/* Nav Links */}
-          <div className="flex flex-wrap justify-center gap-6 text-sm font-medium text-gray-300">
-            {footerLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="hover:text-gold transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7">
+            <div>
+              <p className="text-sm font-semibold text-white">Work</p>
+              <ul className="mt-4 space-y-3">
+                {workLinks.map((link) => (
+                  <li key={link.label}>
+                    <a href={link.href} className="text-sm text-gray-400 transition-colors hover:text-white">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <p className="text-sm font-semibold text-white">Company</p>
+              <ul className="mt-4 space-y-3">
+                {companyLinks.map((link) => (
+                  <li key={link.label}>
+                    <a href={link.href} className="text-sm text-gray-400 transition-colors hover:text-white">
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="col-span-2 sm:col-span-1">
+              <p className="text-sm font-semibold text-white">Socials</p>
+              <ul className="mt-4 space-y-3">
+                {socialLinks.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-sm text-gray-400 transition-colors hover:text-white"
+                    >
+                      {link.label}
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-4">
-          <p>© 2026 Upgradex Agency. All Rights Reserved.</p>
-          <p className="flex items-center gap-1.5 text-gray-400">
-            <span>Made for the next generation of businesses.</span>
-          </p>
-        </div>
+        <p className="mt-14 text-xs text-gray-500">© 2026 Upgradex Agency. All Rights Reserved.</p>
       </div>
     </footer>
   );

@@ -15,10 +15,12 @@ export const ContactSection: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
 
     try {
       const apiKey = import.meta.env.VITE_BREVO_API_KEY;
@@ -64,10 +66,7 @@ export const ContactSection: React.FC = () => {
       if (!response.ok) {
         throw new Error('Failed to send email via Brevo');
       }
-    } catch (error) {
-      console.error("Error sending email via Brevo:", error);
-    } finally {
-      setIsSubmitting(false);
+
       setIsSubmitted(true);
       confetti({
         particleCount: 100,
@@ -75,6 +74,11 @@ export const ContactSection: React.FC = () => {
         origin: { y: 0.7 },
         colors: ['#d4af37', '#00f2fe', '#6366f1'],
       });
+    } catch (error) {
+      console.error("Error sending email via Brevo:", error);
+      setSubmitError('The form could not be sent. Message us on WhatsApp and we will reply there.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -103,7 +107,7 @@ export const ContactSection: React.FC = () => {
               <div>
                 <h3 className="text-2xl font-bold text-white mb-2">Upgradex Agency</h3>
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  Building next-generation web applications, AI solutions, and digital growth ecosystems for ambitious startups and businesses.
+                  A digital marketing agency for websites, UI/UX, apps, AI, SEO, and the campaigns that grow a brand.
                 </p>
               </div>
 
@@ -159,6 +163,22 @@ export const ContactSection: React.FC = () => {
                 </a>
               </div>
 
+              <div className="space-y-3 pt-2 border-t border-white/10">
+                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">What happens next</p>
+                {[
+                  'You tell us the goal, the service, and a rough timeline.',
+                  'We reply on email or WhatsApp with questions, not a generic pitch.',
+                  'You get a clear plan before any build starts.',
+                ].map((step, index) => (
+                  <div key={step} className="flex gap-3 text-sm text-gray-300">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold/15 text-[11px] font-bold text-gold">
+                      {index + 1}
+                    </span>
+                    <span>{step}</span>
+                  </div>
+                ))}
+              </div>
+
               {/* Social Channels */}
               <div className="pt-4 border-t border-white/10">
                 <span className="text-xs font-semibold uppercase tracking-wider text-gray-400 block mb-3">
@@ -166,25 +186,28 @@ export const ContactSection: React.FC = () => {
                 </span>
                 <div className="flex items-center gap-3">
                   <a
-                    href="https://linkedin.com/company/upgradexagency"
+                    href="https://www.linkedin.com/company/117074268/"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="LinkedIn"
                     className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white hover:border-gold/40 hover:bg-gold/10 transition-all font-mono text-xs font-bold"
                   >
                     IN
                   </a>
                   <a
-                    href="https://instagram.com/upgradexagency"
+                    href="https://www.instagram.com/upgradex_agency"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Instagram"
                     className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white hover:border-gold/40 hover:bg-gold/10 transition-all font-mono text-xs font-bold"
                   >
                     IG
                   </a>
                   <a
-                    href="https://github.com/upgradexagency"
+                    href="https://github.com/upgradex-agency"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="GitHub"
                     className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white hover:border-gold/40 hover:bg-gold/10 transition-all font-mono text-xs font-bold"
                   >
                     GH
@@ -217,7 +240,7 @@ export const ContactSection: React.FC = () => {
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="John Doe"
+                        placeholder="Rahul Sharma"
                         className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-gold/60 text-sm transition-colors"
                       />
                     </div>
@@ -229,7 +252,7 @@ export const ContactSection: React.FC = () => {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="john@company.com"
+                        placeholder="rahul@gmail.com"
                         className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-gold/60 text-sm transition-colors"
                       />
                     </div>
@@ -253,7 +276,7 @@ export const ContactSection: React.FC = () => {
                         type="text"
                         value={formData.businessName}
                         onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-                        placeholder="Acme Corp"
+                        placeholder="Sharma Enterprises"
                         className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-gold/60 text-sm transition-colors"
                       />
                     </div>
@@ -272,6 +295,7 @@ export const ContactSection: React.FC = () => {
                         <option value="UI/UX Design">UI/UX Design</option>
                         <option value="AI Solutions & Automations">AI Solutions & Automations</option>
                         <option value="SEO & Digital Growth">SEO & Digital Growth</option>
+                        <option value="Business Automation">Business Automation</option>
                         <option value="Dedicated Developer Hiring">Dedicated Developer Hiring</option>
                       </select>
                     </div>
@@ -300,6 +324,20 @@ export const ContactSection: React.FC = () => {
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-gold/60 text-sm transition-colors"
                     />
                   </div>
+
+                  {submitError && (
+                    <p className="text-sm text-rose-300">
+                      {submitError}{' '}
+                      <a
+                        href="https://wa.me/919153276992?text=Hello%20UpgradeX%20Agency,%20I%20want%20to%20talk%20about%20a%20project."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-[#25D366] underline"
+                      >
+                        Open WhatsApp
+                      </a>
+                    </p>
+                  )}
 
                   <button
                     type="submit"

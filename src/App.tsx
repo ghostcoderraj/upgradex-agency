@@ -5,6 +5,7 @@ import { CustomCursor } from './components/layout/CustomCursor';
 import { WhatsAppToggle } from './components/ui/WhatsAppToggle';
 import { BackgroundParticles } from './components/3d/BackgroundParticles';
 import { HeroSection } from './components/sections/HeroSection';
+import { ClientStartSection } from './components/sections/ClientStartSection';
 import { TrustSection } from './components/sections/TrustSection';
 import { ServicesSection } from './components/sections/ServicesSection';
 import { FeaturedWorkSection } from './components/sections/FeaturedWorkSection';
@@ -50,6 +51,7 @@ export function App() {
       {/* Page Sections */}
       <main className="relative z-10">
         <HeroSection onOpenInquiry={handleOpenInquiry} />
+        <ClientStartSection onOpenInquiry={handleOpenInquiry} />
         <TrustSection />
         <ServicesSection onSelectService={(service) => handleOpenInquiry('project', service)} />
         <FeaturedWorkSection onSelectProject={(proj) => setSelectedProject(proj)} />

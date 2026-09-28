@@ -36,6 +36,7 @@ export const HireCtaBanner: React.FC<HireCtaBannerProps> = ({ onOpenInquiry }) =
               <GlowButton
                 variant="gold"
                 size="lg"
+                showArrow={false}
                 onClick={() => onOpenInquiry('developer')}
               >
                 Hire a Developer →

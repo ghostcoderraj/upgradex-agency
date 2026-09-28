@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { techStackData } from '../../data/techData';
 
 const techIcons: Record<string, React.ReactNode> = {
@@ -74,6 +75,8 @@ const techIcons: Record<string, React.ReactNode> = {
 };
 
 export const TechnologySection: React.FC = () => {
+  const reduce = useReducedMotion();
+
   return (
     <section className="py-24 relative bg-[#06070c] border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -93,13 +96,18 @@ export const TechnologySection: React.FC = () => {
 
         {/* Tech Badges Grid (12 items total, 6 columns x 2 rows = clean grid without empty spaces) */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {techStackData.map((tech) => (
-            <div
+          {techStackData.map((tech, idx) => (
+            <motion.div
               key={tech.id}
-              className="p-5 rounded-2xl bg-[#0a0c16]/80 border border-white/10 hover:border-gold/40 hover:bg-[#111425] transition-all duration-300 group flex flex-col items-center text-center space-y-3 shadow-lg hover:-translate-y-1"
+              className="p-5 rounded-2xl bg-[#0a0c16]/80 border border-white/10 hover:border-gold/50 hover:bg-[#111425] hover:shadow-[0_16px_36px_-20px_rgba(212,175,55,0.55)] transition-colors duration-300 group flex flex-col items-center text-center space-y-3 shadow-lg"
+              initial={reduce ? false : { opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-30px' }}
+              transition={{ duration: 0.45, delay: (idx % 6) * 0.06, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={reduce ? undefined : { y: -8 }}
             >
               <div
-                className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center transition-transform group-hover:scale-110 shadow-inner"
+                className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6 shadow-inner"
               >
                 {techIcons[tech.id]}
               </div>
@@ -112,7 +120,7 @@ export const TechnologySection: React.FC = () => {
                   {tech.category}
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 

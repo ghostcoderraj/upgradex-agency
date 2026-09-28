@@ -40,9 +40,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenInquiry }) => {
         {/* Brand Logo Left */}
         <a href="#home" className="flex items-center group">
           <img
-            src="/logo.png?v=2"
+            src="/logo.png?v=3"
             alt="UpgradeX Agency"
-            className="h-16 md:h-20 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105 sm:h-12"
           />
         </a>
 

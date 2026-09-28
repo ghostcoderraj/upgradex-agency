@@ -97,7 +97,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
           {/* Tech Stack */}
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
-              Technologies Used
+              Project Highlights
             </h4>
             <div className="flex flex-wrap gap-2">
               {project.tags.map((tag) => (
@@ -116,6 +116,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({
             <GlowButton
               variant="gold"
               size="md"
+              showArrow={false}
               onClick={() => {
                 onClose();
                 onOpenInquiry();

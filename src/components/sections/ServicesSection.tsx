@@ -1,121 +1,133 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { servicesData } from '../../data/servicesData';
 import type { ServiceItem } from '../../data/servicesData';
 import { Globe, Layout, PenTool, Cpu, TrendingUp, Zap, ArrowRight, CheckCircle2 } from 'lucide-react';
 
+const inquiryServiceName: Record<string, string> = {
+  'Website Development': 'Website Development',
+  'Web Applications': 'Full-Stack & Web Applications',
+  'UI/UX Design': 'UI/UX Design',
+  'AI Solutions': 'AI Solutions & Automations',
+  'SEO & Digital Growth': 'SEO & Digital Growth',
+  'Business Automation': 'Business Automation',
+};
+
 const iconMap: Record<string, React.ReactNode> = {
-  Globe: <Globe className="w-7 h-7" />,
-  Layout: <Layout className="w-7 h-7" />,
-  Figma: <PenTool className="w-7 h-7" />,
-  Cpu: <Cpu className="w-7 h-7" />,
-  TrendingUp: <TrendingUp className="w-7 h-7" />,
-  Zap: <Zap className="w-7 h-7" />,
+  Globe: <Globe className="h-6 w-6" />,
+  Layout: <Layout className="h-6 w-6" />,
+  Figma: <PenTool className="h-6 w-6" />,
+  Cpu: <Cpu className="h-6 w-6" />,
+  TrendingUp: <TrendingUp className="h-6 w-6" />,
+  Zap: <Zap className="h-6 w-6" />,
 };
 
 interface ServicesSectionProps {
   onSelectService: (serviceName: string) => void;
 }
 
-const ServiceCard: React.FC<{ service: ServiceItem; onSelect: () => void }> = ({ service, onSelect }) => {
-  const [transform, setTransform] = useState('perspective(1000px) rotateX(0deg) rotateY(0deg)');
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    const rotateX = (-y / (rect.height / 2)) * 8;
-    const rotateY = (x / (rect.width / 2)) * 8;
-    setTransform(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`);
-  };
-
-  const handleMouseLeave = () => {
-    setTransform('perspective(1000px) rotateX(0deg) rotateY(0deg)');
-  };
-
+const ServiceCard: React.FC<{
+  service: ServiceItem;
+  active: boolean;
+  onHover: () => void;
+  onSelect: () => void;
+}> = ({ service, active, onHover, onSelect }) => {
   return (
-    <div
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ transform, transition: 'transform 0.15s ease-out' }}
-      className="group relative rounded-3xl p-8 bg-[#090b14]/70 border border-white/10 backdrop-blur-xl shadow-2xl hover:border-gold/40 hover:bg-[#0e1120] transition-all duration-300 flex flex-col justify-between"
+    <article
+      onMouseEnter={onHover}
+      className={`relative flex h-full flex-col rounded-3xl border p-6 transition-colors duration-300 sm:p-7 ${
+        active
+          ? 'border-gold/50 bg-[#0e1120] shadow-[0_0_40px_-18px_rgba(243,208,104,0.85)]'
+          : 'border-white/10 bg-[#090b14]/80 hover:border-white/20'
+      }`}
     >
-      {/* Glow background accent */}
-      <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
+      <div
+        className={`pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br ${service.gradient} transition-opacity duration-500 ${
+          active ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
 
-      <div>
-        {/* Top Header line */}
-        <div className="flex items-center justify-between mb-6">
-          <span className="text-3xl font-extrabold text-white/20 font-mono group-hover:text-gold transition-colors">
+      <div className="relative flex flex-1 flex-col">
+        <div className="mb-5 flex items-center justify-between">
+          <span className={`font-mono text-2xl font-extrabold ${active ? 'text-gold' : 'text-white/25'}`}>
             {service.number}
           </span>
           <div
-            className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg"
+            className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5"
             style={{ color: service.accentColor }}
           >
             {iconMap[service.iconName]}
           </div>
         </div>
 
-        {/* Title & Description */}
-        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-gold transition-colors">
-          {service.title}
-        </h3>
-        <p className="text-gray-300 text-sm leading-relaxed mb-6">
-          {service.description}
-        </p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-gold">{service.forClient}</p>
+        <h3 className="mt-2 text-2xl font-bold text-white">{service.title}</h3>
+        <p className="mt-3 text-sm leading-relaxed text-gray-300">{service.description}</p>
 
-        {/* Features List */}
-        <ul className="space-y-2 mb-8">
-          {service.features.map((feat, idx) => (
-            <li key={idx} className="flex items-center gap-2 text-xs text-gray-400 font-medium">
-              <CheckCircle2 className="w-3.5 h-3.5 text-gold flex-shrink-0" />
-              <span>{feat}</span>
+        <ul className="mt-5 space-y-2">
+          {service.features.map((feature) => (
+            <li key={feature} className="flex items-start gap-2 text-sm text-gray-300">
+              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+              <span>{feature}</span>
             </li>
           ))}
         </ul>
-      </div>
 
-      {/* Explore Service CTA */}
-      <button
-        onClick={onSelect}
-        className="inline-flex items-center justify-between w-full pt-4 border-t border-white/10 text-sm font-semibold text-white group-hover:text-gold transition-colors cursor-pointer"
-      >
-        <span>Explore Service</span>
-        <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-2" />
-      </button>
-    </div>
+        <button
+          type="button"
+          onClick={onSelect}
+          className="mt-6 inline-flex w-full cursor-pointer items-center justify-between border-t border-white/10 pt-4 text-sm font-semibold text-white transition-colors hover:text-gold"
+        >
+          <span>Start with this</span>
+          <ArrowRight className="h-4 w-4" />
+        </button>
+      </div>
+    </article>
   );
 };
 
 export const ServicesSection: React.FC<ServicesSectionProps> = ({ onSelectService }) => {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const timer = window.setInterval(() => {
+      setActive((current) => (current + 1) % servicesData.length);
+    }, 3400);
+    return () => window.clearInterval(timer);
+  }, [paused]);
+
   return (
-    <section id="services" className="py-28 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-semibold">
-            WHAT WE DO
+    <section
+      id="services"
+      className="relative scroll-mt-28 py-28"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto mb-14 max-w-3xl space-y-4 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3 py-1 text-xs font-semibold text-gold">
+            What we do
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Everything You Need to Go Digital.
+          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
+            Pick the work you need first.
           </h2>
-          <p className="text-gray-300 text-base sm:text-lg">
-            From your first website to a complete digital ecosystem, we build solutions designed around your business.
+          <p className="text-base text-gray-300 sm:text-lg">
+            One team for the site, the product, and the growth after launch. Choose a service and we’ll open a request with it already selected.
           </p>
         </div>
 
-        {/* 6 Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {servicesData.map((service) => (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {servicesData.map((service, index) => (
             <ServiceCard
               key={service.id}
               service={service}
-              onSelect={() => onSelectService(service.title)}
+              active={active === index}
+              onHover={() => setActive(index)}
+              onSelect={() => onSelectService(inquiryServiceName[service.title] ?? service.title)}
             />
           ))}
         </div>
-
       </div>
     </section>
   );

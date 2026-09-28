@@ -7,14 +7,13 @@ const TerminalScreen = () => {
   const [lines, setLines] = React.useState<string[]>([]);
   
   const terminalSequence = React.useMemo(() => [
-    "aditya@upgradex:~$ npx create-upgradex-app",
-    "🚀 Deploying premium 3D digital ecosystem...",
-    "✔ Loading Three.js WebGL canvas engine...",
-    "✔ Injecting Brevo SMTP email API keys...",
-    "✔ Optimizing luxury Tailwind CSS theme...",
-    "✔ Compiling TypeScript production builds...",
-    "✨ Build optimized successfully (99/100)",
-    "Ready to turn ideas into reality. 🚀",
+    "aditya@upgradex:~$ npm run build",
+    "Preparing the site and the product...",
+    "✔ Pages, forms, and the first enquiry path",
+    "✔ Accounts, data, and the screens people use",
+    "✔ Search, speed, and the launch checklist",
+    "✔ Ready for review",
+    "Shipped. Tell us what to build next.",
     "aditya@upgradex:~$ "
   ], []);
 

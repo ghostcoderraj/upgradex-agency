@@ -27,6 +27,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   // Close modal on Escape key press
   useEffect(() => {
@@ -40,6 +41,18 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
     }
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setInquiryType(initialType);
+    setIsSuccess(false);
+    setSubmitError('');
+    setFormData((current) => ({
+      ...current,
+      serviceRequired: initialService || 'Website Development',
+      projectType: initialType === 'developer' ? 'Dedicated Developer' : 'Project Based',
+    }));
+  }, [isOpen, initialType, initialService]);
 
   if (!isOpen) return null;
 
@@ -91,10 +104,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
       if (!response.ok) {
         throw new Error('Failed to send email via Brevo');
       }
-    } catch (error) {
-      console.error("Error sending email via Brevo:", error);
-    } finally {
-      setIsSubmitting(false);
+
       setIsSuccess(true);
       confetti({
         particleCount: 80,
@@ -102,6 +112,11 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
         origin: { y: 0.6 },
         colors: ['#d4af37', '#00f2fe', '#6366f1'],
       });
+    } catch (error) {
+      console.error("Error sending email via Brevo:", error);
+      setSubmitError('The form could not be sent. Message us on WhatsApp and we will pick it up from there.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -144,7 +159,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
               Request Received Successfully!
             </h3>
             <p className="text-gray-300 max-w-md mx-auto text-sm sm:text-base">
-              Thank you, <span className="text-gold font-semibold">{formData.name}</span>. Our technical leads at Upgradex Agency will review your request and reach out within 2 hours.
+              Thank you, <span className="text-gold font-semibold">{formData.name}</span>. We have your request and will reply on email or WhatsApp with the next step.
             </p>
             <div className="pt-4">
               <button
@@ -206,7 +221,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="e.g. Alex Morgan"
+                    placeholder="Rahul Sharma"
                     className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-gold/60 text-sm"
                   />
                 </div>
@@ -217,7 +232,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="alex@company.com"
+                    placeholder="rahul@gmail.com"
                     className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-gold/60 text-sm"
                   />
                 </div>
@@ -240,7 +255,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                     type="text"
                     value={formData.businessName}
                     onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-                    placeholder="Company or Startup Name"
+                    placeholder="Sharma Enterprises"
                     className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-gold/60 text-sm"
                   />
                 </div>
@@ -259,6 +274,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                     <option value="UI/UX Design">UI/UX Design</option>
                     <option value="AI Solutions & Automations">AI Solutions & Automations</option>
                     <option value="SEO & Digital Growth">SEO & Digital Growth</option>
+                    <option value="Business Automation">Business Automation</option>
                     <option value="Dedicated Developer Hiring">Dedicated Developer Hiring</option>
                   </select>
                 </div>
@@ -287,6 +303,20 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
                   className="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-gold/60 text-sm"
                 />
               </div>
+
+              {submitError && (
+                <p className="text-sm text-rose-300">
+                  {submitError}{' '}
+                  <a
+                    href="https://wa.me/919153276992?text=Hello%20UpgradeX%20Agency,%20I%20tried%20to%20send%20a%20project%20request."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-[#25D366] underline"
+                  >
+                    Open WhatsApp
+                  </a>
+                </p>
+              )}
 
               <div className="pt-2">
                 <button

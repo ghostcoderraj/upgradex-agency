@@ -110,11 +110,11 @@ export const projectsData: ProjectItem[] = [
     screenshotUrl: "https://api.microlink.io?url=https://www.shivtech.in/&screenshot=true&embed=screenshot.url"
   },
   {
-    id: "prisha-entertainment",
-    title: "Prisha Entertainment",
+    id: "prisha-enterprises",
+    title: "Prisha Enterprises",
     category: "Industrial Portal",
     shortDescription: "High-quality electrical control panels, automation systems, and custom industrial engineering services.",
-    fullDescription: "Engineered a premium business portal for Prisha Entertainment, presenting custom electrical control panels, power systems, and automation services. Designed clean specs visualization and corporate inquiries forms.",
+    fullDescription: "Engineered a premium business portal for Prisha Enterprises, presenting custom electrical control panels, power systems, and automation services. Designed clean specs visualization and corporate inquiries forms.",
     tags: ["Automation Portal", "Vite", "Tailwind CSS", "React", "B2B Lead Generation"],
     metrics: [
       { label: "Inquiry Turnaround", value: "-40% Time" },
@@ -172,5 +172,21 @@ export const projectsData: ProjectItem[] = [
     accentColor: "#38bdf8",
     demoUrl: "https://kdcleaningtechnologies.com/",
     screenshotUrl: "https://api.microlink.io?url=https://kdcleaningtechnologies.com/&screenshot=true&embed=screenshot.url"
+  },
+  {
+    id: "kd-facilities",
+    title: "KD Facilities Management Services",
+    category: "Tech & Service Website",
+    shortDescription: "Facility management site for housekeeping, security, and maintenance across Gurgaon and Delhi NCR.",
+    fullDescription: "Company site for KD Facilities Management Services. It presents integrated facility management, housekeeping, cleaning, security, and technical maintenance, with industry pages and a free site-survey request for commercial, residential, and healthcare properties.",
+    tags: ["Facility Management", "Housekeeping", "Security", "Site Survey"],
+    metrics: [
+      { label: "Facility Support", value: "24/7" },
+      { label: "Integrated Solutions", value: "9+" }
+    ],
+    imageGradient: "from-blue-950/70 via-slate-900 to-cyan-700/20",
+    accentColor: "#2563eb",
+    demoUrl: "https://kdfmservices.com/",
+    screenshotUrl: "/screenshots/kdfm-services.png"
   }
 ];

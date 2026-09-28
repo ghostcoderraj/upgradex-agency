@@ -2,6 +2,7 @@ export interface ServiceItem {
   id: string;
   number: string;
   title: string;
+  forClient: string;
   description: string;
   longDescription: string;
   iconName: string;
@@ -15,14 +16,14 @@ export const servicesData: ServiceItem[] = [
     id: "website-development",
     number: "01",
     title: "Website Development",
-    description: "Modern, responsive and conversion-focused websites for businesses, startups, portfolios and personal brands.",
+    forClient: "A site that brings customers in",
+    description: "A fast site people can trust, built so a visit turns into an enquiry.",
     longDescription: "We engineer pixel-perfect, lightning-fast websites powered by modern frameworks like React and Next.js. Engineered for search engines, high conversion rates, and seamless mobile responsiveness.",
     iconName: "Globe",
     features: [
-      "Custom React & Next.js Architecture",
-      "High-Conversion UI/UX Layouts",
-      "Mobile-First Responsive Design",
-      "Sub-second Load Times & Core Web Vitals"
+      "Clear on every phone",
+      "Laid out so people enquire",
+      "Ready for search from day one"
     ],
     gradient: "from-amber-500/20 to-gold/10",
     accentColor: "#d4af37"
@@ -31,14 +32,14 @@ export const servicesData: ServiceItem[] = [
     id: "web-applications",
     number: "02",
     title: "Web Applications",
-    description: "Powerful dashboards, SaaS platforms, admin panels, customer portals and custom web applications.",
+    forClient: "A product people actually use",
+    description: "Dashboards, portals, and apps your team or your customers open every day.",
     longDescription: "End-to-end full-stack development tailored to scale your product operations. From real-time data visualizers to multi-tenant SaaS platforms built on secure, scalable cloud architectures.",
     iconName: "Layout",
     features: [
-      "SaaS Architecture & Multi-Tenancy",
-      "Interactive Real-Time Analytics Dashboards",
-      "RESTful & GraphQL API Integrations",
-      "Role-Based Access & Authentication"
+      "Accounts and the right access",
+      "Live numbers your team can act on",
+      "Room to add the next feature"
     ],
     gradient: "from-cyan-500/20 to-blue-600/10",
     accentColor: "#00f2fe"
@@ -47,14 +48,14 @@ export const servicesData: ServiceItem[] = [
     id: "ui-ux-design",
     number: "03",
     title: "UI/UX Design",
-    description: "Modern interfaces, interactive user journeys, prototypes and high-converting digital experiences.",
+    forClient: "An interface people understand",
+    description: "Screens and flows that make the next step obvious before a line of code.",
     longDescription: "Design systems that create emotional resonance and effortless user flows. We blend aesthetic visual design with data-backed user experience research to maximize engagement.",
     iconName: "Figma",
     features: [
-      "Comprehensive Design Systems",
-      "Interactive Wireframes & High-Fidelity Prototypes",
-      "User Journey & Conversion Rate Optimization",
-      "Design-to-Code Seamless Hand-off"
+      "A path from visit to action",
+      "A prototype you can click first",
+      "A look that matches the brand"
     ],
     gradient: "from-violet-500/20 to-purple-600/10",
     accentColor: "#8b5cf6"
@@ -63,14 +64,14 @@ export const servicesData: ServiceItem[] = [
     id: "ai-solutions",
     number: "04",
     title: "AI Solutions",
-    description: "AI chatbots, intelligent automation, AI-powered workflows and custom AI engine integrations.",
+    forClient: "Less busywork for the team",
+    description: "Chat, documents, and repeat tasks handled so people stay on the work that matters.",
     longDescription: "Supercharge your business efficiency with modern generative AI, custom fine-tuned LLMs, automated agentic pipelines, and conversational AI interfaces tailored for client engagement.",
     iconName: "Cpu",
     features: [
-      "Custom LLM & OpenAI Engine Integrations",
-      "24/7 Intelligent AI Customer Support Agents",
-      "Automated Document Processing & Extraction",
-      "Predictive Analytics & Smart Workflows"
+      "Answers on your site or in your tools",
+      "Documents read and sorted",
+      "Steps that run without a person each time"
     ],
     gradient: "from-emerald-500/20 to-teal-600/10",
     accentColor: "#10b981"
@@ -79,14 +80,14 @@ export const servicesData: ServiceItem[] = [
     id: "seo-digital-growth",
     number: "05",
     title: "SEO & Digital Growth",
-    description: "Technical SEO, on-page optimization, content strategy and digital growth solutions.",
+    forClient: "Get found after the launch",
+    description: "The site shows up when people search for what you sell.",
     longDescription: "Capture high-intent organic search traffic and outperform competitors. We implement technical SEO foundations, content velocity strategy, and conversion rate optimization.",
     iconName: "TrendingUp",
     features: [
-      "Deep Technical SEO & Architecture Audits",
-      "On-Page Optimization & Schema Microdata",
-      "High-Authority Backlink & Content Strategy",
-      "Search Engine Result Page (SERP) Domination"
+      "The fixes search engines need",
+      "Pages written around real searches",
+      "A plan for what to publish next"
     ],
     gradient: "from-blue-500/20 to-indigo-600/10",
     accentColor: "#3b82f6"
@@ -95,14 +96,14 @@ export const servicesData: ServiceItem[] = [
     id: "business-automation",
     number: "06",
     title: "Business Automation",
-    description: "Automate repetitive processes and build smarter, frictionless digital workflows.",
+    forClient: "Less copy-paste between tools",
+    description: "Leads, customers, and follow-ups move without someone retyping them.",
     longDescription: "Eliminate repetitive manual tasks and operational bottlenecks. Connect CRMs, payment gateways, webhooks, and third-party tools into automated background pipelines.",
     iconName: "Zap",
     features: [
-      "Custom API Webhooks & Middleware",
-      "CRM & Lead Pipeline Automated Syncing",
-      "Automated Customer Onboarding Flows",
-      "Operational Cost & Time Reduction"
+      "New leads land in the right place",
+      "Customers get the next step on their own",
+      "Your tools pass the work along"
     ],
     gradient: "from-rose-500/20 to-orange-600/10",
     accentColor: "#f43f5e"

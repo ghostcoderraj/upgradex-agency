@@ -9,38 +9,34 @@ interface HireDeveloperSectionProps {
 
 export const HireDeveloperSection: React.FC<HireDeveloperSectionProps> = ({ onOpenInquiry }) => {
   const hiringServices = [
-    'Frontend Development (React / Next.js)',
-    'Backend Development (Node.js / Express)',
-    'Full-Stack Architecture',
-    'SaaS Product Engineering',
-    'AI Engine & Automation Integration',
-    'API & Scalable Database Systems',
-    'Custom UI/UX & Responsive Engineering',
-    'Website Maintenance & Dedicated Support',
+    { title: 'The first version', detail: 'A site or app you can show a customer.' },
+    { title: 'The product behind it', detail: 'Accounts, data, and the screens people use.' },
+    { title: 'After launch', detail: 'Fixes, new pages, and the next feature.' },
+    { title: 'On your tools', detail: 'React, Node, AI, and the stack you already have.' },
   ];
 
   const hiringCards = [
     {
-      title: 'PROJECT BASED',
-      description: 'For businesses that need a dedicated developer to build a specific website, application, feature or digital product from start to launch.',
-      cta: 'Hire for a Project →',
+      title: 'A defined project',
+      description: 'One website, app, or feature, taken from the brief to launch.',
+      cta: 'Hire for a project',
       accentColor: 'border-indigo-500/40 hover:border-indigo-400',
       badge: 'Fixed Scope',
       onClick: () => onOpenInquiry('developer', 'Project Based Developer Hiring'),
     },
     {
-      title: 'DEDICATED DEVELOPER',
-      description: 'Get dedicated, full-time or part-time senior development support embedded into your team for ongoing product iteration.',
-      cta: 'Hire a Dedicated Developer →',
+      title: 'A developer on your team',
+      description: 'Someone who stays in the work, full-time or part-time, and ships the next version with you.',
+      cta: 'Hire a developer',
       accentColor: 'border-gold/60 hover:border-gold shadow-[0_0_30px_rgba(212,175,55,0.15)] bg-gradient-to-b from-[#111425] to-[#090b14]',
       badge: 'Popular Option',
       featured: true,
       onClick: () => onOpenInquiry('developer', 'Dedicated Developer Support'),
     },
     {
-      title: 'LONG-TERM DEVELOPMENT',
-      description: 'Build and scale your digital product with continuous engineering, security monitoring, infrastructure updates, and feature rollouts.',
-      cta: 'Build With Us →',
+      title: 'A longer partnership',
+      description: 'Keep building after launch: new features, upkeep, and the product as it grows.',
+      cta: 'Build with us',
       accentColor: 'border-cyan-500/40 hover:border-cyan-400',
       badge: 'Product Partnership',
       onClick: () => onOpenInquiry('developer', 'Long-Term Development Partnership'),
@@ -57,13 +53,13 @@ export const HireDeveloperSection: React.FC<HireDeveloperSectionProps> = ({ onOp
         {/* Main Section Header */}
         <div className="text-center max-w-4xl mx-auto mb-16 space-y-4">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gold/10 border border-gold/40 text-gold text-xs font-bold tracking-wider uppercase">
-            <Sparkles className="w-3.5 h-3.5" /> DEDICATED TECHNICAL TALENT
+            <Sparkles className="w-3.5 h-3.5" /> Hire a developer
           </div>
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
-            Need a Developer for Your Next Project?
+            Need someone to build the next version?
           </h2>
           <p className="text-gray-300 text-base sm:text-xl font-normal leading-relaxed max-w-3xl mx-auto">
-            Don’t just hire a freelancer. Build with a developer who understands your product, technology and business goals.
+            A developer who stays with the product, from the first screen through launch and the work after it.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-6 pt-2 text-xs sm:text-sm font-semibold text-gray-400">
@@ -87,8 +83,8 @@ export const HireDeveloperSection: React.FC<HireDeveloperSectionProps> = ({ onOp
             <div className="rounded-3xl bg-gradient-to-br from-[#0a0d1a] to-[#04050a] border border-white/10 p-2 shadow-2xl relative">
               <DeveloperWorkspace3D />
               <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 text-center">
-                <p className="text-xs text-gray-300 font-mono">
-                  Professional Developer + Modern Technology + Real Product Development
+                <p className="text-xs text-gray-300">
+                  A developer on the product, from the first screen to launch.
                 </p>
               </div>
             </div>
@@ -98,22 +94,24 @@ export const HireDeveloperSection: React.FC<HireDeveloperSectionProps> = ({ onOp
           <div className="lg:col-span-6 space-y-6">
             <div className="space-y-3">
               <span className="text-xs font-mono font-bold text-gold uppercase tracking-widest">
-                ENGINEERING EXPERTISE
+                What you get
               </span>
               <h3 className="text-2xl sm:text-4xl font-extrabold text-white">
-                Hire Skilled Developers for Your Project.
+                A builder for the work in front of you.
               </h3>
               <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-                Whether you need a developer for a specific project, dedicated development support, or long-term product development, Upgradex can help you build with the right technical expertise.
+                One project, a developer who stays, or a longer run of features. You pick the shape. We open the request with hiring already selected.
               </p>
             </div>
 
-            {/* Checklist */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-              {hiringServices.map((service, i) => (
-                <div key={i} className="flex items-center gap-2.5 p-3 rounded-xl bg-white/5 border border-white/5 text-xs font-semibold text-gray-200">
-                  <CheckCircle2 className="w-4 h-4 text-gold flex-shrink-0" />
-                  <span>{service}</span>
+              {hiringServices.map((service) => (
+                <div key={service.title} className="rounded-xl border border-white/10 bg-white/[0.04] p-4">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-gold" />
+                    {service.title}
+                  </div>
+                  <p className="mt-1 pl-6 text-sm text-gray-400">{service.detail}</p>
                 </div>
               ))}
             </div>
@@ -125,7 +123,7 @@ export const HireDeveloperSection: React.FC<HireDeveloperSectionProps> = ({ onOp
                 size="md"
                 onClick={() => onOpenInquiry('developer')}
               >
-                Hire a Developer Now →
+                Hire a developer
               </GlowButton>
             </div>
           </div>
@@ -136,10 +134,10 @@ export const HireDeveloperSection: React.FC<HireDeveloperSectionProps> = ({ onOp
         <div className="mb-16">
           <div className="text-center mb-8">
             <h3 className="text-xl sm:text-2xl font-bold text-white">
-              Flexible Engagement Models (No Hourly Rates)
+              How you can hire
             </h3>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              Focused strictly on quality, expertise, reliability, and business results.
+              Three ways to start. No hourly menu — a project, a person, or a longer partnership.
             </p>
           </div>
 
@@ -169,6 +167,7 @@ export const HireDeveloperSection: React.FC<HireDeveloperSectionProps> = ({ onOp
                   <GlowButton
                     variant={card.featured ? 'gold' : 'primary'}
                     size="sm"
+                    showArrow={false}
                     onClick={card.onClick}
                     className="w-full"
                   >

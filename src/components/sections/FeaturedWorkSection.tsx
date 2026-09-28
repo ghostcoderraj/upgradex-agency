@@ -1,139 +1,236 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { projectsData } from '../../data/projectsData';
 import type { ProjectItem } from '../../data/projectsData';
-import { ArrowUpRight, Lock } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface FeaturedWorkSectionProps {
   onSelectProject: (project: ProjectItem) => void;
 }
 
-export const FeaturedWorkSection: React.FC<FeaturedWorkSectionProps> = ({ onSelectProject }) => {
-  const [activeCategory, setActiveCategory] = useState<string>('All');
+const FILTERS = [
+  { label: 'All', value: 'All' },
+  { label: 'Commerce', value: 'E-Commerce Platform' },
+  { label: 'Education', value: 'Education Platform' },
+  { label: 'Industrial', value: 'Industrial Portal' },
+  { label: 'Business', value: 'IT & Business Services' },
+  { label: 'Service sites', value: 'Tech & Service Website' },
+];
 
-  const categories = ['All', 'E-Commerce Platform', 'Education Platform', 'Industrial Portal', 'IT & Business Services', 'Tech & Service Website'];
+const SLIDE_MS = 5600;
+
+const Shot: React.FC<{ project: ProjectItem; className?: string }> = ({ project, className = '' }) => (
+  <>
+    {project.screenshotUrl ? (
+      <img
+        src={project.screenshotUrl}
+        alt=""
+        className={`h-full w-full object-cover object-top ${className}`}
+        loading="lazy"
+      />
+    ) : (
+      <div className={`h-full w-full bg-gradient-to-br ${project.imageGradient} ${className}`} />
+    )}
+  </>
+);
+
+export const FeaturedWorkSection: React.FC<FeaturedWorkSectionProps> = ({ onSelectProject }) => {
+  const reduce = useReducedMotion();
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [index, setIndex] = useState(0);
+  const [visibleIndex, setVisibleIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [paused, setPaused] = useState(false);
 
   const filteredProjects = activeCategory === 'All'
     ? projectsData
-    : projectsData.filter((p) => p.category === activeCategory);
+    : projectsData.filter((project) => project.category === activeCategory);
+
+  const count = filteredProjects.length;
+  const slideIndex = count === 0 ? 0 : Math.min(index, count - 1);
+  const project = filteredProjects[slideIndex];
+
+  useEffect(() => {
+    if (reduce || paused || count < 2) return;
+    const timer = window.setInterval(() => {
+      setDirection(1);
+      setIndex((current) => (current + 1) % count);
+    }, SLIDE_MS);
+    return () => window.clearInterval(timer);
+  }, [reduce, paused, count, index]);
+
+  useEffect(() => {
+    if (reduce) {
+      setVisibleIndex(slideIndex);
+      return;
+    }
+    const timer = window.setTimeout(() => setVisibleIndex(slideIndex), 400);
+    return () => window.clearTimeout(timer);
+  }, [reduce, slideIndex]);
+
+  const show = (nextIndex: number, dir: 1 | -1) => {
+    if (count < 1) return;
+    setDirection(dir);
+    setIndex((nextIndex + count) % count);
+  };
+
+  const selectCategory = (value: string) => {
+    setActiveCategory(value);
+    setDirection(1);
+    setIndex(0);
+    setVisibleIndex(0);
+  };
 
   return (
-    <section id="work" className="py-28 relative bg-[#040509] border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs font-semibold">
-            FEATURED PORTFOLIO
+    <section id="work" className="relative scroll-mt-28 border-t border-white/5 bg-[#040509] py-24 sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+          <div className="max-w-2xl space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-widest text-gold">Selected work</p>
+            <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
+              Work clients can open.
+            </h2>
+            <p className="text-base text-gray-300 sm:text-lg">
+              One project at a time. Slide through the work, or open the live site.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Ideas We Turned Into Reality.
-          </h2>
-          <p className="text-gray-300 text-base sm:text-lg">
-            A selection of digital experiences we’ve designed and developed.
-          </p>
+          <div className="flex flex-wrap gap-2">
+            {FILTERS.map((filter) => {
+              const selected = activeCategory === filter.value;
+              return (
+                <button
+                  key={filter.value}
+                  type="button"
+                  onClick={() => selectCategory(filter.value)}
+                  className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                    selected
+                      ? 'bg-[#f3d068] text-black'
+                      : 'border border-white/10 bg-white/5 text-gray-300 hover:text-white'
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
-                activeCategory === cat
-                  ? 'bg-gold text-black font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)]'
-                  : 'bg-white/5 text-gray-400 border border-white/10 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => (
-            <div
-              key={project.id}
-              onClick={() => onSelectProject(project)}
-              className="group relative rounded-3xl bg-[#090a12] border border-white/10 overflow-hidden cursor-pointer hover:border-gold/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,0,0,0.8)]"
-            >
-              {/* Project Mockup Container */}
-              <div className="w-full h-56 relative overflow-hidden bg-[#090a12] flex flex-col justify-between p-4 sm:p-6">
-                {/* Website Home Screenshot */}
-                {project.screenshotUrl ? (
-                  <img
-                    src={project.screenshotUrl}
-                    alt={project.title}
-                    className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 z-0"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className={`absolute inset-0 bg-gradient-to-br ${project.imageGradient} z-0`} />
-                )}
-
-                {/* Dark Gradient Overlay for text readability and glass header contrast */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/50 z-10" />
-
-                {/* Simulated Glass Browser Window Top with Real Website URL Textbox */}
-                <div className="flex items-center justify-between bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 w-full relative z-20 shadow-lg">
-                  <div className="flex items-center gap-1.5 shrink-0">
-                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+        {project && (
+          <div
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            <div className="relative">
+              <AnimatePresence mode="wait" custom={direction} initial={false}>
+                <motion.article
+                  key={project.id}
+                  className="group relative grid cursor-pointer overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#090b14] lg:grid-cols-12"
+                  onClick={() => onSelectProject(project)}
+                  custom={direction}
+                  variants={{
+                    enter: (dir: number) => (reduce ? { opacity: 1, x: 0 } : { opacity: 0, x: dir * 56 }),
+                    center: { opacity: 1, x: 0 },
+                    exit: (dir: number) => (reduce ? { opacity: 1, x: 0 } : { opacity: 0, x: dir * -56 }),
+                  }}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: reduce ? 0 : 0.38, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="relative h-72 overflow-hidden lg:col-span-7 lg:h-[420px]">
+                    <Shot project={project} />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                    {count > 1 && (
+                      <>
+                        <button
+                          type="button"
+                          aria-label="Previous project"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            show(slideIndex - 1, -1);
+                          }}
+                          className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/70 text-white backdrop-blur-sm transition-colors hover:border-[#f3d068] hover:text-[#f3d068] sm:left-4"
+                        >
+                          <ChevronLeft className="h-5 w-5" />
+                        </button>
+                        <button
+                          type="button"
+                          aria-label="Next project"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            show(slideIndex + 1, 1);
+                          }}
+                          className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-black/70 text-white backdrop-blur-sm transition-colors hover:border-[#f3d068] hover:text-[#f3d068] sm:right-4"
+                        >
+                          <ChevronRight className="h-5 w-5" />
+                        </button>
+                      </>
+                    )}
                   </div>
-                  
-                  {/* Address Textbox with Lock Icon */}
-                  <div className="flex-1 mx-2 px-2 py-0.5 rounded-md bg-white/10 border border-white/10 text-[9px] sm:text-[10px] text-gray-200 font-mono truncate text-center flex items-center justify-center gap-1 shadow-inner">
-                    <Lock className="w-2.5 h-2.5 text-emerald-400 shrink-0" />
-                    <span className="truncate">{project.demoUrl ? project.demoUrl.replace("https://", "").replace("http://", "").replace(/\/$/, "") : project.title}</span>
+                  <div className="flex flex-col justify-between p-6 sm:p-8 lg:col-span-5">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-widest text-gold">
+                        {String(slideIndex + 1).padStart(2, '0')} · {project.category}
+                      </p>
+                      <h3 className="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{project.title}</h3>
+                      <p className="mt-4 text-base leading-relaxed text-gray-300">{project.shortDescription}</p>
+                    </div>
+                    <div className="mt-8 flex flex-wrap items-center gap-4">
+                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-gold">
+                        View the project <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </span>
+                      {project.demoUrl && (
+                        <a
+                          href={project.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(event) => event.stopPropagation()}
+                          className="text-sm font-semibold text-gray-300 underline-offset-4 hover:text-white hover:underline"
+                        >
+                          Open live site
+                        </a>
+                      )}
+                    </div>
                   </div>
-
-                  <span className="text-[8px] sm:text-[9px] font-mono text-gold px-2 py-0.5 rounded-md bg-gold/10 border border-gold/20 shrink-0 font-semibold">
-                    {project.category}
-                  </span>
-                </div>
-
-                <div className="relative z-20">
-                  <span className="text-2xl font-black text-white group-hover:text-gold transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                    {project.title}
-                  </span>
-                </div>
-              </div>
-
-              {/* Card Footer Details */}
-              <div className="p-6 space-y-4">
-                <p className="text-gray-300 text-sm line-clamp-2 leading-relaxed">
-                  {project.shortDescription}
-                </p>
-
-                {/* Tech Tags */}
-                <div className="flex flex-wrap gap-1.5 pt-2">
-                  {project.tags.slice(0, 3).map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2.5 py-1 rounded-md bg-white/5 text-[11px] font-mono text-gray-300 border border-white/5"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                  {project.tags.length > 3 && (
-                    <span className="px-2 py-1 rounded-md bg-white/5 text-[11px] font-mono text-gold">
-                      +{project.tags.length - 3} more
-                    </span>
+                  {!reduce && !paused && count > 1 && (
+                    <motion.span
+                      className="absolute bottom-0 left-0 h-[3px] bg-[#f3d068]"
+                      initial={{ width: '0%' }}
+                      animate={{ width: '100%' }}
+                      transition={{ duration: SLIDE_MS / 1000, ease: 'linear' }}
+                    />
                   )}
-                </div>
+                </motion.article>
+              </AnimatePresence>
 
-                {/* View Project Action Line */}
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-bold text-gold group-hover:text-white transition-colors">
-                  <span>View Case Study & Metrics</span>
-                  <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </div>
+            </div>
+
+            <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm font-semibold tracking-widest text-gray-400">
+                <span className="text-white">{String(visibleIndex + 1).padStart(2, '0')}</span>
+                <span className="mx-1 text-gray-600">/</span>
+                {String(count).padStart(2, '0')}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {filteredProjects.map((item, itemIndex) => {
+                  const active = itemIndex === visibleIndex;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      aria-label={`Show ${item.title}`}
+                      aria-current={active ? 'true' : undefined}
+                      onClick={() => show(itemIndex, itemIndex >= slideIndex ? 1 : -1)}
+                      className={`h-2 rounded-full transition-all ${
+                        active ? 'w-8 bg-[#f3d068]' : 'w-2 bg-white/25 hover:bg-white/50'
+                      }`}
+                    />
+                  );
+                })}
               </div>
             </div>
-          ))}
-        </div>
-
+          </div>
+        )}
       </div>
     </section>
   );
