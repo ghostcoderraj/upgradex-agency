@@ -1,9 +1,36 @@
-import { useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { CustomCursor } from './components/layout/CustomCursor';
 import { WhatsAppToggle } from './components/ui/WhatsAppToggle';
-import { BackgroundParticles } from './components/3d/BackgroundParticles';
+
+const BackgroundParticles = lazy(() =>
+  import('./components/3d/BackgroundParticles').then((module) => ({
+    default: module.BackgroundParticles,
+  })),
+);
+
+function DesktopParticles() {
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1024px)').matches;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData = 'connection' in navigator && (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    if (!desktop || reduce || saveData) return;
+
+    const timer = window.setTimeout(() => setEnabled(true), 700);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  if (!enabled) return null;
+
+  return (
+    <Suspense fallback={null}>
+      <BackgroundParticles />
+    </Suspense>
+  );
+}
 import { HeroSection } from './components/sections/HeroSection';
 import { ClientStartSection } from './components/sections/ClientStartSection';
 import { TrustSection } from './components/sections/TrustSection';
@@ -36,8 +63,7 @@ export function App() {
 
   return (
     <div className="relative min-h-screen bg-[#030305] text-gray-100 font-sans selection:bg-gold/30 selection:text-gold-light">
-      {/* Subtle Background Particles Canvas */}
-      <BackgroundParticles />
+      <DesktopParticles />
 
       {/* Floating Precision Cursor Ring */}
       <CustomCursor />

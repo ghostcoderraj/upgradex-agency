@@ -10,7 +10,7 @@ export const HireCtaBanner: React.FC<HireCtaBannerProps> = ({ onOpenInquiry }) =
   return (
     <section className="py-16 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative rounded-3xl p-10 sm:p-14 bg-gradient-to-r from-[#0d1024] via-[#141029] to-[#1a1420] border border-gold/40 shadow-[0_20px_60px_rgba(0,0,0,0.9)] overflow-hidden">
+        <div className="relative overflow-hidden rounded-3xl border border-gold/40 bg-gradient-to-r from-[#0d1024] via-[#141029] to-[#1a1420] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.9)] sm:p-10 lg:p-14">
           
           {/* Subtle grid background */}
           <div className="absolute inset-0 bg-grid-pattern opacity-25 pointer-events-none" />

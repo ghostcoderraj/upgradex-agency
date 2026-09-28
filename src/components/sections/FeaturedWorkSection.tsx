@@ -27,6 +27,8 @@ const Shot: React.FC<{ project: ProjectItem; className?: string }> = ({ project,
         alt=""
         className={`h-full w-full object-cover object-top ${className}`}
         loading="lazy"
+        decoding="async"
+        fetchPriority="low"
       />
     ) : (
       <div className={`h-full w-full bg-gradient-to-br ${project.imageGradient} ${className}`} />

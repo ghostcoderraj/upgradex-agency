@@ -270,6 +270,19 @@ function ServiceCard({
 
 export const HeroCoreCanvas: React.FC<HeroCoreCanvasProps> = ({ variant = 'stage' }) => {
   const reduce = useReducedMotion();
+  const [lite, setLite] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches,
+  );
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 1023px)');
+    const sync = () => setLite(query.matches);
+    sync();
+    query.addEventListener('change', sync);
+    return () => query.removeEventListener('change', sync);
+  }, []);
+
+  const calm = reduce || lite;
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
   const x = useSpring(pointerX, { stiffness: 46, damping: 18, mass: 0.7 });
@@ -291,7 +304,7 @@ export const HeroCoreCanvas: React.FC<HeroCoreCanvasProps> = ({ variant = 'stage
 
   return (
     <div
-      className="relative h-[400px] w-full overflow-hidden [container-type:size] sm:h-[460px] lg:h-[520px]"
+      className="relative h-[340px] w-full overflow-hidden [container-type:size] sm:h-[420px] lg:h-[520px]"
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
     >
@@ -315,31 +328,33 @@ export const HeroCoreCanvas: React.FC<HeroCoreCanvasProps> = ({ variant = 'stage
             }}
           />
 
-          <TravelingOrbit />
+          {!calm && <TravelingOrbit />}
 
-          <div className="absolute inset-0">
-            {ORBIT_DOTS.map((dot) => (
-              <OrbitDot key={`${dot.tilt}-${dot.phase}-${dot.size}`} {...dot} />
-            ))}
-            {DRIFTERS.map((dot) => (
-              <motion.span
-                key={`${dot.x}-${dot.y}`}
-                className="absolute left-1/2 top-1/2 rounded-full"
-                style={{
-                  width: dot.size,
-                  height: dot.size,
-                  marginLeft: -dot.size / 2,
-                  marginTop: -dot.size / 2,
-                  background: dot.color,
-                  boxShadow: `0 0 8px ${dot.color}`,
-                  x: dot.x,
-                  y: dot.y,
-                }}
-                animate={reduce ? undefined : { y: [dot.y, dot.y - 16, dot.y], opacity: [0.45, 1, 0.45] }}
-                transition={{ duration: 5.5 + dot.delay, delay: dot.delay, repeat: Infinity, ease: 'easeInOut' }}
-              />
-            ))}
-          </div>
+          {!calm && (
+            <div className="absolute inset-0">
+              {ORBIT_DOTS.map((dot) => (
+                <OrbitDot key={`${dot.tilt}-${dot.phase}-${dot.size}`} {...dot} />
+              ))}
+              {DRIFTERS.map((dot) => (
+                <motion.span
+                  key={`${dot.x}-${dot.y}`}
+                  className="absolute left-1/2 top-1/2 rounded-full"
+                  style={{
+                    width: dot.size,
+                    height: dot.size,
+                    marginLeft: -dot.size / 2,
+                    marginTop: -dot.size / 2,
+                    background: dot.color,
+                    boxShadow: `0 0 8px ${dot.color}`,
+                    x: dot.x,
+                    y: dot.y,
+                  }}
+                  animate={reduce ? undefined : { y: [dot.y, dot.y - 16, dot.y], opacity: [0.45, 1, 0.45] }}
+                  transition={{ duration: 5.5 + dot.delay, delay: dot.delay, repeat: Infinity, ease: 'easeInOut' }}
+                />
+              ))}
+            </div>
+          )}
 
           <CoreSphere showMark={variant === 'stage'} />
 

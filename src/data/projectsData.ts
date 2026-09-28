@@ -27,7 +27,7 @@ export const projectsData: ProjectItem[] = [
     imageGradient: "from-indigo-900/60 via-slate-900 to-indigo-600/20",
     accentColor: "#6366f1",
     demoUrl: "https://www.gle5.com/",
-    screenshotUrl: "/screenshots/gle5.png"
+    screenshotUrl: "/screenshots/gle5.jpg"
   },
   {
     id: "dazzle-lighting",
@@ -43,7 +43,7 @@ export const projectsData: ProjectItem[] = [
     imageGradient: "from-amber-900/60 via-slate-900 to-amber-600/20",
     accentColor: "#d4af37",
     demoUrl: "https://www.dazzlelighting.in/",
-    screenshotUrl: "/screenshots/dazzle-lighting.png"
+    screenshotUrl: "/screenshots/dazzle-lighting.jpg"
   },
   {
     id: "kabuliwala-co",
@@ -59,7 +59,7 @@ export const projectsData: ProjectItem[] = [
     imageGradient: "from-amber-950/60 via-slate-900 to-amber-700/20",
     accentColor: "#d4af37",
     demoUrl: "https://kabuliwalaco.com/",
-    screenshotUrl: "/screenshots/kabuliwala-co.png"
+    screenshotUrl: "/screenshots/kabuliwala-co.jpg"
   },
   {
     id: "rivers-aviation",
@@ -75,7 +75,7 @@ export const projectsData: ProjectItem[] = [
     imageGradient: "from-cyan-900/60 via-slate-900 to-cyan-600/20",
     accentColor: "#00f2fe",
     demoUrl: "https://www.riversaviationacademy.co.in/",
-    screenshotUrl: "/screenshots/rivers-aviation.png"
+    screenshotUrl: "/screenshots/rivers-aviation.jpg"
   },
   {
     id: "codemasti",
@@ -187,6 +187,6 @@ export const projectsData: ProjectItem[] = [
     imageGradient: "from-blue-950/70 via-slate-900 to-cyan-700/20",
     accentColor: "#2563eb",
     demoUrl: "https://kdfmservices.com/",
-    screenshotUrl: "/screenshots/kdfm-services.png"
+    screenshotUrl: "/screenshots/kdfm-services.jpg"
   }
 ];

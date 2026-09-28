@@ -1,6 +1,52 @@
-import React from 'react';
-import { DeveloperWorkspace3D } from '../3d/DeveloperWorkspace3D';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { GlowButton } from '../ui/GlowButton';
+
+const DeveloperWorkspace3D = lazy(() =>
+  import('../3d/DeveloperWorkspace3D').then((module) => ({
+    default: module.DeveloperWorkspace3D,
+  })),
+);
+
+function HireVisual() {
+  const [showScene, setShowScene] = useState(false);
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => {
+      const saveData = 'connection' in navigator && (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+      setShowScene(desktop.matches && !reduce.matches && !saveData);
+    };
+    sync();
+    desktop.addEventListener('change', sync);
+    return () => desktop.removeEventListener('change', sync);
+  }, []);
+
+  if (!showScene) {
+    return (
+      <div className="flex h-[280px] flex-col justify-between rounded-[1.35rem] bg-[#070910] p-5 sm:h-[340px] sm:p-6">
+        <div className="flex items-center gap-2 text-xs font-semibold text-gray-400">
+          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+          <span className="ml-2 font-mono text-[11px] text-gray-500">upgradex</span>
+        </div>
+        <div className="space-y-2 font-mono text-[13px] leading-relaxed text-gray-300 sm:text-sm">
+          <p><span className="text-gold">$</span> pages, forms, and the first enquiry</p>
+          <p><span className="text-cyan">✓</span> accounts, data, and the screens people use</p>
+          <p><span className="text-gold">✓</span> ready for review</p>
+        </div>
+        <p className="text-xs text-gray-500">A developer on the product, from the first screen to launch.</p>
+      </div>
+    );
+  }
+
+  return (
+    <Suspense fallback={<div className="h-[400px] lg:h-[520px]" />}>
+      <DeveloperWorkspace3D />
+    </Suspense>
+  );
+}
 import { CheckCircle2, Code, Sparkles, UserCheck, ShieldCheck, Zap } from 'lucide-react';
 
 interface HireDeveloperSectionProps {
@@ -81,8 +127,8 @@ export const HireDeveloperSection: React.FC<HireDeveloperSectionProps> = ({ onOp
           {/* LEFT: 3D Developer Workspace Visual */}
           <div className="lg:col-span-6 relative">
             <div className="rounded-3xl bg-gradient-to-br from-[#0a0d1a] to-[#04050a] border border-white/10 p-2 shadow-2xl relative">
-              <DeveloperWorkspace3D />
-              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 text-center">
+              <HireVisual />
+              <div className="absolute bottom-6 left-6 right-6 hidden rounded-2xl border border-white/10 bg-black/60 p-4 text-center backdrop-blur-md lg:block">
                 <p className="text-xs text-gray-300">
                   A developer on the product, from the first screen to launch.
                 </p>
