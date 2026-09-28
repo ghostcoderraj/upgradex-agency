@@ -328,13 +328,14 @@ export const HeroCoreCanvas: React.FC<HeroCoreCanvasProps> = ({ variant = 'stage
             }}
           />
 
-          {!calm && <TravelingOrbit />}
+          <TravelingOrbit />
 
-          {!calm && (
-            <div className="absolute inset-0">
-              {ORBIT_DOTS.map((dot) => (
-                <OrbitDot key={`${dot.tilt}-${dot.phase}-${dot.size}`} {...dot} />
-              ))}
+          <div className="absolute inset-0">
+            {(calm ? ORBIT_DOTS.filter((_, index) => index % 3 === 0) : ORBIT_DOTS).map((dot) => (
+              <OrbitDot key={`${dot.tilt}-${dot.phase}-${dot.size}`} {...dot} />
+            ))}
+            {!calm && (
+              <>
               {DRIFTERS.map((dot) => (
                 <motion.span
                   key={`${dot.x}-${dot.y}`}
@@ -353,8 +354,9 @@ export const HeroCoreCanvas: React.FC<HeroCoreCanvasProps> = ({ variant = 'stage
                   transition={{ duration: 5.5 + dot.delay, delay: dot.delay, repeat: Infinity, ease: 'easeInOut' }}
                 />
               ))}
-            </div>
-          )}
+              </>
+            )}
+          </div>
 
           <CoreSphere showMark={variant === 'stage'} />
 
